@@ -16,16 +16,16 @@ void on_pwm_wrap() {
 // this is the interrupt handler, called each time the PWM counter wraps
     static int fade = 0;
     static bool going_up = true;
-    static int change = 10;
+    static int change = 10;                                     //variable that will decrement the max brightness of LED with every cycle 
     // Clear the interrupt flag that brought us here
     pwm_clear_irq(pwm_gpio_to_slice_num(PICO_DEFAULT_LED_PIN));
 
-    if (going_up) {
+    if (going_up) {                                            //if statement to reset the value of chnage to create looped cycle
         if(change >= MAX_LED_BRIGHTNESS){
             change = 10;
         }
         ++fade;
-        if (fade > MAX_LED_BRIGHTNESS - change) {
+        if (fade > MAX_LED_BRIGHTNESS - change) {               //max limit of LED brightness limited by change 
             fade = MAX_LED_BRIGHTNESS;
             going_up = false;
         }
@@ -34,7 +34,7 @@ void on_pwm_wrap() {
         if (fade < MIN_LED_BRIGHTNESS) {
             fade = MIN_LED_BRIGHTNESS;
             going_up = true;
-            change+=20;
+            change+=20;                                       //incrementing change
         }
     }
     // Square the fade value to make the LED's brightness appear more linear
